@@ -92,10 +92,10 @@ import {
       let match;
       while ((match = mentionRegex.exec(text)) !== null) {
         const mention = match[1];
-        console.log(match.index)
+        // console.log(match.index)
         const plainTextBeforeMention = text.substring(lastIndex, match.index);
         if (plainTextBeforeMention) {
-          console.log(plainTextBeforeMention)
+          // console.log(plainTextBeforeMention)
           elements.push(
             <Text
               onLayout={onLayout}

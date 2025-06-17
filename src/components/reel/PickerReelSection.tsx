@@ -17,12 +17,12 @@ const PickerReelSection = () => {
             formatAsMp4:true,
             includeExtra:true,
             }).then((res)=>{
-                console.log('ressssss',res);
+                // console.log('ressssss',res);
                 createThumbnail({
                     url:res.assets![0].uri || '',
                     timeStamp:100,
                 }).then(response=>{
-                    console.log('____',response)
+                    // console.log('____',response)
                     if(res.assets![0].uri){
                         navigate('UploadReelScreen',{
                             thumb_uri:response.path,

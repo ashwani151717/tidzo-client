@@ -1,6 +1,7 @@
 import { navigate, resetAndNavigate } from '../../utils/NavigationUtils';
 import { appAxios } from '../apiConfig';
 import { refetchUser } from './userAction';
+import { setFeedReels } from '../reducer/reelSlice';
 
 
 export const createReel = (data: any) => async (dispatch: any) => {
@@ -18,7 +19,9 @@ export const fetchFeedReel =
       const res = await appAxios.get(
         `/feed/home?limit=${limit || 25}&offset=${offset}`,
       );
-      return res.data.reels || [];
+      const reels = res.data.reels || [];
+      dispatch(setFeedReels(reels));
+      return reels;
     } catch (error) {
       console.log('FETCH REEL ERROR', error);
       return [];
@@ -47,7 +50,6 @@ export const getReelById =
   (id: string, deepLinkType: string) => async (dispatch: any) => {
     try {
       const res = await appAxios.get(`/reel/${id}`);
-      console.log(deepLinkType, id);
       if (deepLinkType !== 'RESUME') {
         resetAndNavigate('BottomTab');
       }

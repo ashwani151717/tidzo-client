@@ -43,11 +43,11 @@
 	<key>GIDClientID</key>
 	<string>110660272190-og78voivslgfvg1ohj4f86po3j9j3hd9.apps.googleusercontent.com</string>
 	<key>FacebookAppID</key>
-	<string>1025367769563646</string>
+	<string>1729251111023896</string>
 	<key>FacebookDisplayName</key>
-	<string>SocialMedia</string>
+	<string>social_media</string>
 	<key>FacebookClientToken</key>
-	<string>cc0d7b7f32352013dd79787e4ebd8b28</string>
+	<string>5082bf700108a0ce4b876250c9f3146b</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

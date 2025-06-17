@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { screenHeight, screenWidth } from '../../utils/Scaling'
 import { Colors } from '../../constants/Colors'
 import { TouchableOpacity } from 'react-native'
-import FastImage from 'react-native-fast-image'
+import FastImage from '@d11/react-native-fast-image'
 import ReelCard from '../laoder/ReelCard'
 
 interface ReelItemProps {

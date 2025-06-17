@@ -19,7 +19,7 @@ interface uriData {
 const UploadReelScreen: React.FC = () => {
     const data = useRoute();
     const item = data?.params as uriData;
-    console.log('item',item)
+    // console.log('item',item)
     const [caption, setCaption] = useState<string>('');
     const {startUpload} = useUpload();
   

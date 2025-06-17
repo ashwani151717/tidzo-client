@@ -20,7 +20,7 @@ import React, {
   import {useAppDispatch} from '../../redux/reduxHook';
 import { uploadFile } from '../../redux/action/fileAction';
 import { navigate } from '../../utils/NavigationUtils';
-import { createReel } from '../../redux/action/reelAction';
+import { createReel, fetchFeedReel } from '../../redux/action/reelAction';
   
   interface UploadContextType {
     isUpload: boolean;
@@ -88,6 +88,7 @@ import { createReel } from '../../redux/action/reelAction';
         }
         setUploadProgress(70);
         setLoadingMessage('Finishing Upload...✨');
+       
         const data = {
           videoUri: videoResponse,
           thumbUri: thumbnailResponse,
@@ -96,14 +97,23 @@ import { createReel } from '../../redux/action/reelAction';
         await dispatch(createReel(data));
         setUploading(false);
         setUploadProgress(100);
-        await setTimeout(() => {
-          Animated.timing(uploadAnimation, {
-            toValue: 0,
-            duration: 500,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
-          }).start(() => showUpload(false));
-        }, 5000);
+        
+        // Fetch updated feed immediately after upload
+        const updatedFeed = await dispatch(fetchFeedReel(0, 46));
+        
+        if (!updatedFeed) {
+          throw new Error('Failed to update feed');
+        }
+        
+        // Show success message for 5 seconds
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        
+        Animated.timing(uploadAnimation, {
+          toValue: 0,
+          duration: 500,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }).start(() => showUpload(false));
       } catch (error) {
         console.log(error)
         showUpload(false);

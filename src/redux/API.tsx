@@ -4,17 +4,12 @@ import {Platform} from 'react-native';
 
 export const BASE_URL =
   Platform.OS === 'android'
-    ? 'http://192.168.1.183:3000'
-    : 'http://192.168.1.183:3000';
+    ? 'http://10.13.50.158:3000'
+    : 'http://10.13.50.158:3000';
+    
 
-// RUNNING ON REAL DEVICE USE YOUR NETWORK IP TO ACCESS ON REAL DEVICE
-//eg http://192.168.29.88:3000
 
-// FOR PRODUCTION UPDATE THESE DEPLOYMENT URI and CREATE BUILD
-// or you can setup more automation using like NODE__DEV or config env
-// if you want more flexibility
 
-// export const BASE_URL = "https://reelzzz-server.com";
 
 export const CHECK_USERNAME = `${BASE_URL}/oauth/check-username`;
 export const REGISTER = `${BASE_URL}/oauth/register`;

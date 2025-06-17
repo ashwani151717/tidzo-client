@@ -32,7 +32,6 @@ export const checkUsernameAvailability =
   export const register = (data: registerData) => async (dispatch: any) => {
     try {
       const res = await axios.post(REGISTER, data);
-      console.log('---=+++____',res)
       token_storage.set('access_token', res.data.tokens.access_token);
       token_storage.set('refresh_token', res.data.tokens.refresh_token);
       await dispatch(setUser(res.data.user));

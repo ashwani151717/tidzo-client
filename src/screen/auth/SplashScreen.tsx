@@ -30,6 +30,10 @@ const SplashScreen:FC = () => {
       const decodedAccessToken=jwtDecode<DecodedToken>(access_token);
       const decodedRefreshToken=jwtDecode<DecodedToken>(refresh_token);
 
+      // console.log('rrr',refresh_token)
+
+      // console.log('decodedAccessToken____',decodedRefreshToken)
+
       const currentTime=Date.now()/1000;
       if(decodedRefreshToken.exp<currentTime){
         resetAndNavigate('LoginScreen');

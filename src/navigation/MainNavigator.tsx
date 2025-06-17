@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 const MainNavigator:FC = () => {
   return (
     <UploadProvider>
-   <Stack.Navigator initialRouteName='SplashScreen'
+   <Stack.Navigator initialRouteName='LoginScreen'
    screenOptions={()=>({
     headerShown:false,
    })} >

@@ -152,14 +152,14 @@ const result = await launchImageLibrary({
 //   setLoading(false)
 // }
 setLoading(false)
-console.log('result',result?.assets[0]?.uri )
+// console.log('result',result?.assets[0]?.uri )
 
 // const filepath=result.assets[0].uri
     createThumbnail({
       url: result?.assets[0]?.uri || '',
-      timeStamp: 100,
+      timeStamp: 600,
     }).then(response => {
-        console.log(response);
+        // console.log(response);
          navigate('UploadReelScreen', {
           thumb_uri: response.path,
           file_uri:result?.assets[0]?.uri,

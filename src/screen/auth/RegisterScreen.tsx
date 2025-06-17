@@ -1,5 +1,5 @@
 import { ActivityIndicator, Alert, Keyboard, KeyboardAvoidingViewComponent, PermissionsAndroid, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import CustomSafeAreaView from '../../components/global/CustomAreaView';
 import { Colors } from '../../constants/Colors';
 import { FONTS } from '../../constants/Fonts';
@@ -29,7 +29,7 @@ interface initialdata{
   email:string,
   userImage:string
    }
-const RegisterScreen = () => {
+const RegisterScreen:FC = () => {
 
   const data=useRoute();
   const dispatch=useAppDispatch();
@@ -83,7 +83,7 @@ const RegisterScreen = () => {
   if (result.assets && result.assets.length > 0) {
     setIsLocalImagePickedUp(true);
     setImageUri(result.assets[0].uri || '');
-    console.log(imageUri)
+    // console.log(imageUri)
   }
 };
  const handleLaunchCamera = async () => {

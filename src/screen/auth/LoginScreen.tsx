@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { FC } from 'react'
 import CustomView from '../../components/global/CustomAreaView'
 import CustomSafeAreaView from '../../components/global/CustomAreaView'
 import Lottie from 'lottie-react-native'
@@ -14,7 +14,7 @@ import { useAppDispatch } from '../../redux/reduxHook'
 import { signInWithFacebook, signInWithGoogle } from '../../redux/SocialLogin'
 import { navigate } from '../../utils/NavigationUtils'
 
-const LoginScreen = () => {
+const LoginScreen:FC = () => {
   const dispatch=useAppDispatch();
   return (
     <CustomSafeAreaView style={styles.container}>

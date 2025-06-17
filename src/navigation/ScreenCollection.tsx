@@ -2,10 +2,10 @@
 import SplashScreen from "../screen/auth/SplashScreen";
 import LoginScreen from "../screen/auth/LoginScreen";
 import RegisterScreen from "../screen/auth/RegisterScreen";
-import HomeScreen from "../screen/dashboard/HomeScreen";
 import BottomTab from "./BottomTab";
 import PickReelScreen from "../screen/reel/PickReelScreen";
 import UploadReelScreen from "../screen/reel/UploadReelScreen";
+import FeedReelScreen from "../screen/reel/FeedReelScreen";
 
 
 export const authStack = [
@@ -37,6 +37,10 @@ export const authStack = [
       name: 'UploadReelScreen',
       component: UploadReelScreen,
     },
+    {
+      name:'FeedReelScreen',
+      component: FeedReelScreen,
+    }
     
   ];
   
