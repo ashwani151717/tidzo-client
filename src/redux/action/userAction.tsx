@@ -5,6 +5,7 @@ import Toast from 'react-native-toast-message';
 import { resetAndNavigate } from '../../utils/NavigationUtils';
 import { setUser } from '../reducer/userSlice';
 import { appAxios } from '../apiConfig';
+import { addFollowing  } from '../reducer/followingSlice';
 
 interface registerData {
   id_token: string;
@@ -56,7 +57,39 @@ export const checkUsernameAvailability =
     }
   };
 
-
+  export const toggleFollow = (userId: string) => async (dispatch: any) => {
+    try {
+      const res = await appAxios.put(`/user/follow/${userId}`);
+      console.log('Toggle follow response:', res.data);
+      
+      // Handle different possible response structures
+      let isFollowing = false;
+      if (res.data.msg === 'Unfollowed') {
+        isFollowing = false;
+      } else if (res.data.msg === 'Followed' || res.data.following === true) {
+        isFollowing = true;
+      } else if (typeof res.data.following === 'boolean') {
+        isFollowing = res.data.following;
+      }
+      
+      const data = {
+        id: userId,
+        isFollowing: isFollowing,
+      };
+      
+      console.log('Dispatching addFollowing with data:', data);
+      dispatch(addFollowing(data));
+      dispatch(refetchUser());
+    } catch (error: any) {
+      console.log('TOGGLE FOLLOW ERROR ->', error);
+      Toast.show({
+        type: 'normalToast',
+        props: {
+          msg: 'Failed to follow/unfollow user',
+        },
+      });
+    }
+  };
 
 
 

@@ -36,11 +36,13 @@ interface RouteProp {
     }).current;
   
     const onViewableItemsChanged = useRef(
-      debounce(({viewableItems}: {viewableItems: Array<ViewToken>}) => {
+      ({viewableItems}: {viewableItems: Array<ViewToken>}) => {
         if (viewableItems.length > 0) {
-          setCurrentVisibleIndex(viewableItems[0].index || 0);
+          const newIndex = viewableItems[0].index || 0;
+          console.log('Viewable item changed to index:', newIndex);
+          setCurrentVisibleIndex(newIndex);
         }
-      }, 100),
+      },
     ).current;
   
     const getItemLayout = useCallback(
@@ -92,10 +94,11 @@ interface RouteProp {
   
     const renderVideoList = useCallback(
       ({item, index}: {item: any; index: number}) => {
-        console.log('gettt',index, currentVisibleIndex,);
+        // console.log('gettt',index, currentVisibleIndex,);
         return (
-            <VideoItem item={item} isvisible={index===currentVisibleIndex}
-            preload={Math.abs(currentVisibleIndex+3)>=index}/>
+            <VideoItem key={index} item={item} isVisible={index===currentVisibleIndex}
+            preload={Math.abs(currentVisibleIndex+3) >= index}
+            />
        
         );
       },

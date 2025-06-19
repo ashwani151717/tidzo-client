@@ -13,7 +13,7 @@ const persistConfig = {
   key: 'root',
   storage: reduxStorage,
   blacklist: [],
-  whitelist: ['user', 'reel']
+  whitelist: ['user', 'reel', 'following', 'like']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

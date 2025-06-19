@@ -4,8 +4,8 @@ import {Platform} from 'react-native';
 
 export const BASE_URL =
   Platform.OS === 'android'
-    ? 'http://10.13.50.158:3000'
-    : 'http://10.13.50.158:3000';
+    ? 'http://10.1.50.195:3000'
+    : 'http://10.1.50.195:3000';
     
 
 

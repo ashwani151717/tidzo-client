@@ -2,6 +2,7 @@
 import 'react-native-gesture-handler';
 import { Platform, StatusBar, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import './src/sheets/sheet'
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Navigation from './src/navigation/Navigation';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';

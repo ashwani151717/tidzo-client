@@ -60,7 +60,7 @@ const animatedstyle=useAnimatedStyle(()=>{
 
   const fetchReel = useCallback(async() => {
     setLoading(true)
-    await dispatch(fetchFeedReel(0, 46));
+    await dispatch(fetchFeedReel(0, 48));
     setLoading(false)
   }, [dispatch])
 
