@@ -1,5 +1,6 @@
 import { navigate, resetAndNavigate } from '../../utils/NavigationUtils';
 import { appAxios } from '../apiConfig';
+import { token_storage } from '../storage';
 import { refetchUser } from './userAction';
 import { setFeedReels } from '../reducer/reelSlice';
 
@@ -14,10 +15,19 @@ export const createReel = (data: any) => async (dispatch: any) => {
 };
 
 export const fetchFeedReel =
-  (offset: number, limit: number) => async (dispatch: any) => {
+  (offset: number, limit: number, category?: string, subcategory?: string) =>
+  async (dispatch: any) => {
     try {
+      const isGuest = !token_storage.getString('access_token');
+      const path = category || isGuest ? '/feed/guest' : '/feed/home';
+      const categoryQuery = category
+        ? `&category=${encodeURIComponent(category)}`
+        : '';
+      const subQuery = subcategory
+        ? `&sub=${encodeURIComponent(subcategory)}`
+        : '';
       const res = await appAxios.get(
-        `/feed/home?limit=${limit || 25}&offset=${offset}`,
+        `${path}?limit=${limit || 25}&offset=${offset}${categoryQuery}${subQuery}`,
       );
       const reels = res.data.reels || [];
       dispatch(setFeedReels(reels));

@@ -202,10 +202,10 @@ setLoading(false)
       <View style={styles.pad}>
         <PickerReelSection />
         <View style={styles.flexRow}>
-          <CustomText variant="h6" fontFamily={FONTS.Medium}>
+          <CustomText variant="h6" fontFamily={FONTS.Medium} style={{color: Colors.onBackground}}>
             Recent
           </CustomText>
-          <Icon name="chevron-down" size={RFValue(20)} color={Colors.white} />
+          <Icon name="chevron-down" size={RFValue(20)} color={Colors.onBackground} />
         </View>
       </View>
 {/* 
@@ -219,7 +219,7 @@ setLoading(false)
               ListFooterComponent={renderFooter}
             /> */}
              {loading?
-             (<View style={{flex:1,justifyContent:'center',alignItems:'center'}}><ActivityIndicator size='large' color={'white'}/></View>):(<>
+             (<View style={{flex:1,justifyContent:'center',alignItems:'center'}}><ActivityIndicator size='large' color={Colors.onBackground}/></View>):(<>
               <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
             <TouchableOpacity onPress={handleVideoSelect}>
               <CustomText style={{backgroundColor:'#57A0D2',padding:8,borderRadius:12,fontWeight:500}}>Please use Your Photo Library </CustomText>

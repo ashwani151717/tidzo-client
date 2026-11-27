@@ -20,15 +20,15 @@ const CustomHeader:FC <Headerprops> = ({title}) => {
     <TouchableOpacity onPress={()=>goBack()}>
         <Icon name="keyboard-backspace"
         size={RFValue(20)}
-        color={'white'}
+        color={Colors.onBackground}
         />
 
     </TouchableOpacity>
-    <CustomText>{title}</CustomText>
+    <CustomText style={styles.title}>{title}</CustomText>
     <TouchableOpacity onPress={ishandle}>
     <Icon name="information-outline"
         size={RFValue(20)}
-        color={'white'}
+        color={Colors.onBackground}
         />
 
     </TouchableOpacity>
@@ -44,5 +44,8 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
         margin:5
+    },
+    title:{
+        color:Colors.onBackground,
     }
 })

@@ -1,119 +1,85 @@
-import { Alert, Animated, StyleSheet, Text, View } from 'react-native'
-import React, { FC, useEffect, useState } from 'react'
-import { Colors } from '../../constants/Colors'
-import CustomText from '../../components/global/CustomText';
-import { token_storage } from '../../redux/storage';
-import {jwtDecode} from 'jwt-decode'
-import { navigate, resetAndNavigate } from '../../utils/NavigationUtils';
-import { REFRESH_TOKEN } from '../../redux/API';
-import { refresh_tokens } from '../../redux/apiConfig';
-import { useAppDispatch } from '../../redux/reduxHook';
-import { refetchuser } from '../../redux/action/userAction';
-import LinearGradient from 'react-native-linear-gradient';
+import { Alert, StyleSheet, View } from 'react-native'
+import React, { FC, useCallback, useEffect, useRef } from 'react'
+import Icon from 'react-native-vector-icons/Ionicons'
+import { BobbingLogo, Drift } from '../../components/kids/SkyHero'
+import { token_storage } from '../../redux/storage'
+import { jwtDecode } from 'jwt-decode'
+import { resetAndNavigate } from '../../utils/NavigationUtils'
+import { refresh_tokens } from '../../redux/apiConfig'
+import { useAppDispatch } from '../../redux/reduxHook'
+import { refetchUser } from '../../redux/action/userAction'
+import { RFValue } from 'react-native-responsive-fontsize'
 
+const SPLASH_DURATION_MS = 3000
+const BLUE = '#2E9EFF'
 
-const SplashScreen:FC = () => {
+const SplashScreen: FC = () => {
+  const dispatch = useAppDispatch()
+  const hasNavigated = useRef(false)
 
-  const [isStop,setIsStop] = useState(false);
-   
-  const scale=new Animated.Value(1);
-  const dispatch=useAppDispatch();
   interface DecodedToken {
-    exp:number;
+    exp: number
   }
 
-  const tokencheck=async()=>{
-    const access_token=token_storage.getString('access_token') as string;
-    const refresh_token=token_storage.getString('refresh_token') as string;
+  const tokencheck = useCallback(async () => {
+    if (hasNavigated.current) {
+      return
+    }
+    hasNavigated.current = true
 
-    if(access_token){
-      const decodedAccessToken=jwtDecode<DecodedToken>(access_token);
-      const decodedRefreshToken=jwtDecode<DecodedToken>(refresh_token);
+    const access_token = token_storage.getString('access_token') as string
+    const refresh_token = token_storage.getString('refresh_token') as string
 
-      // console.log('rrr',refresh_token)
+    if (access_token) {
+      const decodedAccessToken = jwtDecode<DecodedToken>(access_token)
+      const decodedRefreshToken = jwtDecode<DecodedToken>(refresh_token)
 
-      // console.log('decodedAccessToken____',decodedRefreshToken)
-
-      const currentTime=Date.now()/1000;
-      if(decodedRefreshToken.exp<currentTime){
-        resetAndNavigate('LoginScreen');
-        Alert.alert('Session expired','Please login again')
-        return;
+      const currentTime = Date.now() / 1000
+      if (decodedRefreshToken.exp < currentTime) {
+        resetAndNavigate('LoginScreen')
+        Alert.alert('Session expired', 'Please login again')
+        return
       }
-      if(decodedAccessToken.exp<currentTime){
+      if (decodedAccessToken.exp < currentTime) {
         try {
-          refresh_tokens();
-          dispatch(refetchuser())
-
-          
-
-          
+          refresh_tokens()
+          dispatch(refetchUser())
         } catch (error) {
           console.log(error)
           Alert.alert('There was an error')
-          return;
-          }
+          return
+        }
       }
       resetAndNavigate('BottomTab')
-      return;
-
+      return
     }
     resetAndNavigate('LoginScreen')
+  }, [dispatch])
 
-  }
-
-  useEffect(()=>{
-    async function deeplink() {
+  useEffect(() => {
+    const timer = setTimeout(() => {
       tokencheck()
-      }
-      setTimeout(() => {
-        deeplink();
-      }, 2000);
-    
-  }
- 
-  )
-  useEffect(()=>{
-    const breathAnimation=Animated.loop(
-      Animated.sequence([
-        Animated.timing(scale,{
-          toValue:1.2,//scale up
-          duration:1000,
-          useNativeDriver:true,
-        }),
-        Animated.timing(scale,{
-          toValue:1,  //scale down
-          duration:1000,
-          useNativeDriver:true,
-        })
-      ])
-      )
-      if(!isStop){
-        breathAnimation.start();
-      }
-      return()=>{
-        breathAnimation.stop();
-      }
-  },[isStop])
+    }, SPLASH_DURATION_MS)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [tokencheck])
 
   return (
     <View style={styles.container}>
-    {/* */}
-    <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-    <Animated.Image
-    source={require('../../assets/images/logo_t.png')}
-  style={{width:'60%',
-    height:'25%',
-    resizeMode:'contain',
-    transform:[{scale}]
-    }}/>
-
-      
-    {/* <CustomText variant='h2'>Connect Me</CustomText> */}
-   
-   
-    </View>
-
+      <View style={styles.stage}>
+        <Drift delay={0} travel={8} style={styles.starLeft}>
+          <Icon name="star" size={22} color="#FFE566" />
+        </Drift>
+        <Drift delay={180} travel={10} style={styles.starRight}>
+          <Icon name="star" size={18} color="#FFD6EA" />
+        </Drift>
+        <Drift delay={320} travel={7} style={styles.starLow}>
+          <Icon name="star" size={14} color="#FFFFFF" />
+        </Drift>
+        <BobbingLogo size={RFValue(220)} />
+      </View>
     </View>
   )
 }
@@ -121,17 +87,31 @@ const SplashScreen:FC = () => {
 export default SplashScreen
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    backgroundColor:Colors.background,
-  },
-  image:{
-    
-
-
-  },
-  linearGradient: {
+  container: {
     flex: 1,
-    height: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: BLUE,
+  },
+  stage: {
+    width: RFValue(280),
+    height: RFValue(280),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  starLeft: {
+    position: 'absolute',
+    top: 18,
+    left: 12,
+  },
+  starRight: {
+    position: 'absolute',
+    top: 36,
+    right: 8,
+  },
+  starLow: {
+    position: 'absolute',
+    bottom: 28,
+    left: 28,
   },
 })

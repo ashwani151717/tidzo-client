@@ -187,15 +187,15 @@ const handleSubmit = async () => {
         })}>
         <View style={styles.titleContainer}>
           <LinearGradient
-          colors={['rgba(0,0,0,0)',Colors.text,'rgba(0,0,0,0)']}
+          colors={['rgba(27,67,50,0)',Colors.onBackground,'rgba(27,67,50,0)']}
           style={styles.linearGradient}
           start={{x: 0, y: 0.5}}
           end={{x: 1, y: 0.5}}/>
-            <CustomText variant="h4">
+            <CustomText variant="h4" style={styles.onLight}>
               complete your profile
             </CustomText>
             <LinearGradient
-          colors={['rgba(0,0,0,0)',Colors.text,'rgba(0,0,0,0)']}
+          colors={['rgba(27,67,50,0)',Colors.onBackground,'rgba(27,67,50,0)']}
           style={styles.linearGradient}
           start={{x: 0, y: 0.5}}
           end={{x: 1, y: 0.5}} />
@@ -209,10 +209,10 @@ const handleSubmit = async () => {
           </View>
            </TouchableOpacity>
            <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',width:'100%'}}>
-            <CustomText>UserName</CustomText>
+            <CustomText style={styles.onLight}>UserName</CustomText>
             {usernameAvailable!==null &&
             (
-              <CustomText style={[styles.label,{alignSelf:'flex-end'}]}>
+              <CustomText style={[styles.label, styles.onLight, {alignSelf:'flex-end'}]}>
                 {usernameAvailable ? ('✅'):(<Text style={{color:'#ff0000'}}>Is Already Taken</Text>)}
               </CustomText>
             )}
@@ -228,7 +228,7 @@ const handleSubmit = async () => {
             }}
             placeholder='Enter Unique UserName'
            />
-           <CustomText style={{alignSelf:'flex-start'}}>Full Name</CustomText>
+           <CustomText style={[styles.onLight, {alignSelf:'flex-start'}]}>Full Name</CustomText>
            <TextInput
            style={styles.input}
            returnKeyType='next'
@@ -237,7 +237,7 @@ const handleSubmit = async () => {
             placeholderTextColor={Colors.border}
             placeholder='Enter Full Name'
            />
-                      <CustomText style={{alignSelf:'flex-start'}}>Short Bio</CustomText>
+                      <CustomText style={[styles.onLight, {alignSelf:'flex-start'}]}>Short Bio</CustomText>
            <TextInput
            style={[styles.input,styles.textArea]}
            returnKeyType='next'
@@ -250,8 +250,8 @@ const handleSubmit = async () => {
            />
             {loading ? (
           <View style={styles.flexRow}>
-            <ActivityIndicator size="small" color={Colors.text} />
-            <CustomText variant="h8" fontFamily={FONTS.Medium}>
+            <ActivityIndicator size="small" color={Colors.onBackground} />
+            <CustomText variant="h8" fontFamily={FONTS.Medium} style={styles.onLight}>
               {loadingMessage || 'Loading....'}
             </CustomText>
           </View>
@@ -285,6 +285,9 @@ const styles = StyleSheet.create({
   },
   label: {
     alignSelf: 'flex-start',
+  },
+  onLight: {
+    color: Colors.onBackground,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -325,7 +328,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    color: Colors.text,
+    color: Colors.onBackground,
     borderRadius: 5,
     fontFamily: FONTS.Medium,
     padding: 10,

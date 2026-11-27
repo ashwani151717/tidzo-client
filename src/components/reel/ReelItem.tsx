@@ -1,50 +1,19 @@
-import {View, Text, StyleSheet, Platform} from 'react-native';
+import {View, StyleSheet, Platform} from 'react-native';
 import React from 'react';
 import CustomText from '../global/CustomText';
-import UserDetails from './UserDetails'
-import InteractionButtons from './InteractionButtons';
 
 interface ReelItemProps {
-  user: any;
   description: string;
-  likes: number;
-  comments: number;
-  onLike: () => void;
-  onComment: () => void;
-  onShare: () => void;
-  onLongPressLike: () => void;
-  isLiked: boolean;
 }
 
-const ReelItem: React.FC<ReelItemProps> = ({
-  user,
-  description,
-  likes,
-  comments,
-  onLike,
-  onComment,
-  onShare,
-  isLiked,
-  onLongPressLike,
-}) => {
+const ReelItem: React.FC<ReelItemProps> = ({description}) => {
   return (
     <View style={styles.interactionContainer}>
       <View style={styles.userContainer}>
-        <UserDetails user={user} />
         <CustomText variant="h8" numberOfLines={2}>
           {description}
         </CustomText>
       </View>
-
-      <InteractionButtons
-        likes={likes}
-        onLongPressLike={onLongPressLike}
-        comments={comments}
-        onLike={onLike}
-        onComment={onComment}
-        onShare={onShare}
-        isLiked={isLiked}
-      />
     </View>
   );
 };

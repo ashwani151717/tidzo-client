@@ -1,7 +1,7 @@
 import { FC, ReactNode } from "react";
-import { StyleSheet } from "react-native";
-import { View, ViewStyle } from "react-native";
+import { StyleSheet, View, ViewStyle } from "react-native";
 import { Colors } from "../../constants/Colors";
+import LinearGradient from "react-native-linear-gradient";
 
 
 interface CustomViewProps{
@@ -11,7 +11,14 @@ interface CustomViewProps{
 
 const CustomView:FC<CustomViewProps>=({children,style})=>{
     return(
-       <View style={[styles.container,style]}>
+       <View style={[styles.container, style]}>
+        <LinearGradient
+          pointerEvents="none"
+          colors={[Colors.background, Colors.white]}
+          start={{x: 0, y: 0}}
+          end={{x: 0, y: 1}}
+          style={StyleSheet.absoluteFill}
+        />
         {children}
        </View>
     )
@@ -20,7 +27,6 @@ const CustomView:FC<CustomViewProps>=({children,style})=>{
 const styles=StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:Colors.background,
     }
 })
 

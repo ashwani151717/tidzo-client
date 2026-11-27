@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import {screenHeight, screenWidth} from '../../utils/Scaling';
@@ -13,7 +14,6 @@ import {useIsFocused} from '@react-navigation/native';
 import FastImage from '@d11/react-native-fast-image'
 import Loader from '../../assets/images/loader.jpg';
 import Video from 'react-native-video';
-import convertToProxyURL from 'react-native-video-cache';
 import {
   Gesture,
   GestureDetector,
@@ -23,10 +23,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import LottieView from 'lottie-react-native';
 import singlelike from '../../assets/animations/like.json'
 import DoubleTapAnim from '../../assets/animations/heart.json';
-import ReelItem from './ReelItem';
 import { selectLikedReel } from '../../redux/reducer/likeSlice';
 import { toggleLikeReel } from '../../redux/action/likeAction';
-import { SheetManager } from 'react-native-actions-sheet';
 // import ReelItem from './ReelItem';
 // import {toggleLikeReel} from '../../redux/actions/likeAction';
 // import {selectLikedReel} from '../../redux/reducers/likeSlice';
@@ -37,15 +35,28 @@ interface VideoItemProps {
   item: any;
   isVisible: boolean;
   preload: boolean;
+  onFinished?: () => void;
+  playsBeforeScroll?: number;
+  pauseOnTap?: boolean;
 }
 
-const VideoItem: FC<VideoItemProps> = ({item, isVisible, preload}) => {
+const VideoItem: FC<VideoItemProps> = ({
+  item,
+  isVisible,
+  preload,
+  onFinished,
+  playsBeforeScroll = 2,
+  pauseOnTap = true,
+}) => {
   const dispatch = useAppDispatch();
   // const likedReels = useAppSelector(selectLikedReel);
   // const commentsCounts = useAppSelector(selectComments);
+  const videoRef = useRef<any>(null);
+  const playCount = useRef(0);
   const [paused, setPaused] = useState<string | null>(null);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [videoLoaded, setVideoLoaded] = useState<boolean>(false);
+  const [audioReady, setAudioReady] = useState<boolean>(false);
   const [showLikeAnim, setShowLikeAnim] = useState<boolean>(false);
   const likedReels = useAppSelector(selectLikedReel);
   const isFocused = useIsFocused();
@@ -71,13 +82,16 @@ const VideoItem: FC<VideoItemProps> = ({item, isVisible, preload}) => {
 
 
   const handleTogglePlay = useCallback(() => {
+    if (!pauseOnTap) {
+      return;
+    }
     let currentState = !paused ? 'paused' : 'play';
     setIsPaused(!isPaused);
     setPaused(currentState);
     setTimeout(() => {
       if (currentState === 'play') setPaused(null);
     }, 700);
-  }, [paused, isPaused]);
+  }, [pauseOnTap, paused, isPaused]);
 
   const handleDoubleTapLike = useCallback(() => {
     setShowLikeAnim(true);
@@ -105,12 +119,26 @@ const VideoItem: FC<VideoItemProps> = ({item, isVisible, preload}) => {
     .runOnJS(true);
 
   useEffect(() => {
+    playCount.current = 0;
+    setVideoLoaded(false);
+    setAudioReady(false);
+  }, [item?._id]);
+
+  useEffect(() => {
     setIsPaused(!isVisible);
     if (!isVisible) {
+      setAudioReady(false);
+      playCount.current = 0;
       setPaused(null);
-      setVideoLoaded(false);
+      return;
     }
-  }, [isVisible]);
+    if (!videoLoaded) {
+      return;
+    }
+    videoRef.current?.seek(0);
+    const timer = setTimeout(() => setAudioReady(true), 250);
+    return () => clearTimeout(timer);
+  }, [isVisible, item?._id, videoLoaded]);
 
   useEffect(() => {
     if (!isFocused) {
@@ -122,7 +150,26 @@ const VideoItem: FC<VideoItemProps> = ({item, isVisible, preload}) => {
   }, [isFocused]);
 
   const handleVideoLoad = () => {
+    videoRef.current?.seek(0);
     setVideoLoaded(true);
+  };
+
+  const handleSeek = () => {
+    if (isVisible) {
+      setAudioReady(true);
+    }
+  };
+
+  const handleEnd = () => {
+    if (!isVisible) {
+      return;
+    }
+    playCount.current += 1;
+    if (playsBeforeScroll > 0 && playCount.current >= playsBeforeScroll) {
+      onFinished?.();
+      return;
+    }
+    videoRef.current?.seek(0);
   };
 
   return (
@@ -130,10 +177,10 @@ const VideoItem: FC<VideoItemProps> = ({item, isVisible, preload}) => {
       <GestureHandlerRootView style={{flex: 1}}>
         <GestureDetector gesture={Gesture.Exclusive(doubleTap, singleTap)}>
           <View style={styles.videoContainer}>
-            {!videoLoaded && (
+            {!audioReady && (
               <FastImage
                 source={{uri: item.thumbUri, priority: FastImage.priority.high}}
-                style={styles.videoContainer}
+                style={[styles.videoContainer, styles.poster]}
                 defaultSource={Loader}
                 resizeMode="cover"
               />
@@ -141,32 +188,36 @@ const VideoItem: FC<VideoItemProps> = ({item, isVisible, preload}) => {
 
             {isVisible || preload ? (
               <Video
+                ref={videoRef}
                 poster={item.thumbUri}
                 posterResizeMode="cover"
                 source={
-                  isVisible || preload
-                    ? {uri: convertToProxyURL(item.videoUri)}
-                    : undefined
+                  isVisible || preload ? {uri: item.videoUri} : undefined
                 }
                 bufferConfig={{
                   minBufferMs: 2500,
-                  maxBufferMs: 3000,
-                  bufferForPlaybackMs: 2500,
-                  bufferForPlaybackAfterRebufferMs: 2500,
+                  maxBufferMs: 8000,
+                  bufferForPlaybackMs: 1500,
+                  bufferForPlaybackAfterRebufferMs: 1500,
                 }}
+                volume={1}
+                muted={false}
                 ignoreSilentSwitch={'ignore'}
                 playWhenInactive={false}
                 playInBackground={false}
-                useTextureView={false}
+                useTextureView={true}
                 controls={false}
-                disableFocus={true}
+                disableFocus={false}
                 style={styles.videoContainer}
-                paused={isPaused}
-                repeat={true}
+                paused={!isVisible || isPaused || !audioReady}
+                repeat={false}
+                onEnd={handleEnd}
                 hideShutterView
                 minLoadRetryCount={5}
                 resizeMode="cover"
                 shutterColor="transparent"
+                onLoad={handleVideoLoad}
+                onSeek={handleSeek}
                 onReadyForDisplay={handleVideoLoad}
               />
             ) : null}
@@ -197,26 +248,6 @@ const VideoItem: FC<VideoItemProps> = ({item, isVisible, preload}) => {
           </View>
         </View>
       )}
-      <ReelItem user={item?.user}
-       description={item.caption} 
-       likes={reelMeta?.likesCount || 0}
-      comments={34}
-      onLike={() => {
-        handleLikeReel();
-      }}
-      onComment={()=>{}}
-      onLongPressLike={() => {
-        SheetManager.show('like-sheet', {
-          payload: {
-            entityId: item?._id,
-            type: 'reel',
-          },
-        });
-      }}
-      onShare={()=>{}}
-      isLiked={reelMeta?.isLiked}
-      />
-      
     </View>
   );
 };
@@ -267,6 +298,8 @@ const styles = StyleSheet.create({
     height: screenHeight,
     aspectRatio: 9 / 16,
     flex: 1,
-    zIndex: -1,
+  },
+  poster: {
+    zIndex: 1,
   },
 });

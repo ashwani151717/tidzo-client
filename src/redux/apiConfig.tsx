@@ -20,6 +20,9 @@ appAxios.interceptors.response.use(
   response => response,
   async error => {
     if (error.response && error.response.status === 401) {
+      if (!token_storage.getString('refresh_token')) {
+        return Promise.reject(error);
+      }
       try {
         const newAccessToken = await refresh_tokens();
         if (newAccessToken) {

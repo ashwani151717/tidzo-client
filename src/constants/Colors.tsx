@@ -1,10 +1,10 @@
 export enum Colors {
   theme = '#a9c2eb',
-  background = '#020B17',
+  background = '#C6F0D6',
   card = '#162640',
   text = '#fff',
+  onBackground = '#1B4332',
   border = '#484C56',
-  fbColor = '#1877F2',
   white = '#FFFFFF',
   inactive_tint = '#4b535e',
   disabled = '#D9D9D9',

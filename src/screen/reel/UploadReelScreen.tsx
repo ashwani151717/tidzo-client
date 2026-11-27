@@ -74,7 +74,7 @@ const UploadReelScreen: React.FC = () => {
       height: 150,
       borderColor: 'gray',
       borderWidth: 1,
-      color: Colors.text,
+      color: Colors.onBackground,
       borderRadius: 5,
       fontFamily: FONTS.Medium,
       padding: 10,

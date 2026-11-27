@@ -12,21 +12,7 @@ PODS:
   - DoubleConversion (1.1.6)
   - DVAssetLoaderDelegate (0.3.3)
   - fast_float (6.1.4)
-  - FBAEMKit (18.0.0):
-    - FBSDKCoreKit_Basics (= 18.0.0)
   - FBLazyVector (0.78.1)
-  - FBSDKCoreKit (18.0.0):
-    - FBAEMKit (= 18.0.0)
-    - FBSDKCoreKit_Basics (= 18.0.0)
-  - FBSDKCoreKit_Basics (18.0.0)
-  - FBSDKGamingServicesKit (18.0.0):
-    - FBSDKCoreKit (= 18.0.0)
-    - FBSDKCoreKit_Basics (= 18.0.0)
-    - FBSDKShareKit (= 18.0.0)
-  - FBSDKLoginKit (18.0.0):
-    - FBSDKCoreKit (= 18.0.0)
-  - FBSDKShareKit (18.0.0):
-    - FBSDKCoreKit (= 18.0.0)
   - fmt (11.0.2)
   - glog (0.3.5)
   - GoogleSignIn (7.1.0):
@@ -1337,21 +1323,6 @@ PODS:
     - Yoga
   - react-native-create-thumbnail (2.1.1):
     - React-Core
-  - react-native-fbsdk-next (13.4.1):
-    - React-Core
-    - react-native-fbsdk-next/Core (= 13.4.1)
-    - react-native-fbsdk-next/Login (= 13.4.1)
-    - react-native-fbsdk-next/Share (= 13.4.1)
-  - react-native-fbsdk-next/Core (13.4.1):
-    - FBSDKCoreKit (~> 18.0)
-    - React-Core
-  - react-native-fbsdk-next/Login (13.4.1):
-    - FBSDKLoginKit (~> 18.0)
-    - React-Core
-  - react-native-fbsdk-next/Share (13.4.1):
-    - FBSDKGamingServicesKit (~> 18.0)
-    - FBSDKShareKit (~> 18.0)
-    - React-Core
   - react-native-image-picker (7.2.3):
     - DoubleConversion
     - glog
@@ -1553,6 +1524,8 @@ PODS:
     - ReactCommon/turbomodule/core
     - SPTPersistentCache (~> 1.1.0)
     - Yoga
+  - react-native-voice (3.2.4):
+    - React-Core
   - React-NativeModulesApple (0.78.1):
     - glog
     - hermes-engine
@@ -1840,6 +1813,10 @@ PODS:
     - React-logger (= 0.78.1)
     - React-perflogger (= 0.78.1)
     - React-utils (= 0.78.1)
+  - rive-react-native (9.8.6):
+    - React-Core
+    - RiveRuntime (= 6.24.0)
+  - RiveRuntime (6.24.0)
   - RNCMaskedView (0.1.11):
     - React
   - RNFastImage (8.9.2):
@@ -2171,6 +2148,8 @@ PODS:
     - SDWebImage/Core (~> 5.17)
   - SocketRocket (0.7.1)
   - SPTPersistentCache (1.1.0)
+  - TextToSpeech (4.1.1):
+    - React-Core
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -2218,7 +2197,6 @@ DEPENDENCIES:
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - react-native-create-thumbnail (from `../node_modules/react-native-create-thumbnail`)
-  - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
@@ -2226,6 +2204,7 @@ DEPENDENCIES:
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-video (from `../node_modules/react-native-video`)
   - react-native-video-cache (from `../node_modules/react-native-video-cache`)
+  - "react-native-voice (from `../node_modules/@react-native-voice/voice`)"
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-performancetimeline (from `../node_modules/react-native/ReactCommon/react/performance/timeline`)
@@ -2254,6 +2233,7 @@ DEPENDENCIES:
   - ReactAppDependencyProvider (from `build/generated/ios`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - rive-react-native (from `../node_modules/rive-react-native`)
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNFastImage (from `../node_modules/@d11/react-native-fast-image`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -2264,6 +2244,7 @@ DEPENDENCIES:
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - SPTPersistentCache
+  - TextToSpeech (from `../node_modules/react-native-tts`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -2271,12 +2252,6 @@ SPEC REPOS:
     - AppAuth
     - CocoaAsyncSocket
     - DVAssetLoaderDelegate
-    - FBAEMKit
-    - FBSDKCoreKit
-    - FBSDKCoreKit_Basics
-    - FBSDKGamingServicesKit
-    - FBSDKLoginKit
-    - FBSDKShareKit
     - GoogleSignIn
     - GTMAppAuth
     - GTMSessionFetcher
@@ -2286,6 +2261,7 @@ SPEC REPOS:
     - libdav1d
     - libwebp
     - lottie-ios
+    - RiveRuntime
     - SDWebImage
     - SDWebImageAVIFCoder
     - SDWebImageWebPCoder
@@ -2376,8 +2352,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-camera-roll/camera-roll"
   react-native-create-thumbnail:
     :path: "../node_modules/react-native-create-thumbnail"
-  react-native-fbsdk-next:
-    :path: "../node_modules/react-native-fbsdk-next"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-mmkv:
@@ -2392,6 +2366,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-video"
   react-native-video-cache:
     :path: "../node_modules/react-native-video-cache"
+  react-native-voice:
+    :path: "../node_modules/@react-native-voice/voice"
   React-NativeModulesApple:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios"
   React-perflogger:
@@ -2448,6 +2424,8 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  rive-react-native:
+    :path: "../node_modules/rive-react-native"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNFastImage:
@@ -2466,28 +2444,24 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  TextToSpeech:
+    :path: "../node_modules/react-native-tts"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
+  AppAuth: 58e37c546bb9bf2073c1392ccba8cef35ff283cb
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   DVAssetLoaderDelegate: 0caec20e4e08b8560b691131539e9180024d4bce
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
-  FBAEMKit: e34530df538b8eb8aeb53c35867715ba6c63ef0c
   FBLazyVector: bba368dacede4c9dec7a58c9be5a2d3e9ea30cc7
-  FBSDKCoreKit: d3f479a69127acebb1c6aad91c1a33907bcf6c2f
-  FBSDKCoreKit_Basics: 017b6dc2a1862024815a8229e75661e627ac1e29
-  FBSDKGamingServicesKit: cdb625419879a651d07906d8f874fc76291be660
-  FBSDKLoginKit: 5875762d1fe09ddcb05d03365d4f5dc34413843d
-  FBSDKShareKit: 082d1b087d6481af36f8d8433542f25f2fc2c8dd
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
-  GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
-  GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
+  GoogleSignIn: 4ac041cf807e78942e3c0863775a98ee8c8e0f7c
+  GTMAppAuth: 4a3fbbb34098b327feaa51cfbf98b0b12f6892e7
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   hermes-engine: f493b0a600aed5dc06532141603688a30a5b2f61
   KTVCocoaHTTPServer: df8d7b861e603ff8037e9b2138aca2563a6b768d
@@ -2529,7 +2503,6 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: b740ebae7fad70aa78bc24cc0dfc15ac9637b6eb
   react-native-cameraroll: b93d0a5f753817f337cb32a5e245814f6961c628
   react-native-create-thumbnail: 733160dca9a548262e1030e7fcdae90a93d203ca
-  react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
   react-native-image-picker: ede3b0b991aae11b3c1d61c187a833720e255277
   react-native-mmkv: 24917f0685641ccfd37c9b7004b26c00551128be
   react-native-netinfo: 26560022f28c06d8ef00a9ff1e03beefbbb60c2d
@@ -2537,6 +2510,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: 0f14bce545abcdfbff79ce2e3c78c109f0be283e
   react-native-video: 42400849995ecb35601a2ecb192520b0019f13b5
   react-native-video-cache: 03aa1f85f515d6db4366689bbd2e7ff068a3e434
+  react-native-voice: 908a0eba96c8c3d643e4f98b7232c6557d0a6f9c
   React-NativeModulesApple: af0571ac115d09c9a669ed45ce6a4ca960598a2d
   React-perflogger: 26d07766b033f84559bd520e949453dba8bf1cd8
   React-performancetimeline: 0f3e0b6e2152951257bd8c90f95d527cf4316fa8
@@ -2565,6 +2539,8 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 5da0393968ce2767e79f9fda7caa108592b9b63e
   ReactCodegen: 82d5bc3e3ad2c8496848554cb2d3b64b03b53420
   ReactCommon: 269d0d36423fad044eaea49900e88684ac670a16
+  rive-react-native: 15b356fbce7d20a459865f836b6e4a1c9760b8c2
+  RiveRuntime: 34b1681a20b64bfb549f210fe7365fafb9321b8a
   RNCMaskedView: 4c5ee1c8667d56077246cc6d1977f77393923560
   RNFastImage: 3b70be781054426db38e60b9eb19689b78e8b57f
   RNGestureHandler: dcb1b1db024f3744b03af56d132f4f72c4c27195
@@ -2579,8 +2555,9 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   SPTPersistentCache: df36ea46762d7cf026502bbb86a8b79d0080dff4
+  TextToSpeech: 89b239221ec378d213af422d14789a729705360b
   Yoga: b94ff2d7559cb66837c97a3f394ddb817faad4d6
 
 PODFILE CHECKSUM: b60f5f1a659b337edb0e1fe0cab0e9d639b48c80
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.17.0

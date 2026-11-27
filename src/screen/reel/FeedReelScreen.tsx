@@ -16,7 +16,11 @@ import { RFValue } from 'react-native-responsive-fontsize'
 import VideoItem from '../../components/reel/VideoItem'
 import FastImage from '@d11/react-native-fast-image'
 interface RouteProp {
-    data: any[];
+    data?: any[];
+    category?: string;
+    subcategory?: string;
+    playsBeforeScroll?: number;
+    pauseOnTap?: boolean;
   }
   
   const FeedReelScrollScreen: FC = () => {
@@ -28,8 +32,11 @@ interface RouteProp {
     const [loading, setLoading] = useState(false);
     const [offset, setOffset] = useState(0);
     const [data, setData] = useState<any[]>([]);
-    const [hasMore, setHasMore] = useState(true);
+    const [hasMore, setHasMore] = useState(!routeParams?.category);
     const [currentVisibleIndex, setCurrentVisibleIndex] = useState<number>(0);
+    const listRef = useRef<FlatList<any>>(null);
+    const indexRef = useRef(0);
+    const dataRef = useRef<any[]>([]);
   
     const viewabilityConfig = useRef({
       itemVisiblePercentThreshold: 80,
@@ -39,7 +46,7 @@ interface RouteProp {
       ({viewableItems}: {viewableItems: Array<ViewToken>}) => {
         if (viewableItems.length > 0) {
           const newIndex = viewableItems[0].index || 0;
-          console.log('Viewable item changed to index:', newIndex);
+          indexRef.current = newIndex;
           setCurrentVisibleIndex(newIndex);
         }
       },
@@ -66,7 +73,7 @@ interface RouteProp {
   
     const fetchFeed = useCallback(
       debounce(async (offset: number) => {
-        if (loading || !hasMore) return;
+        if (routeParams?.category || loading || !hasMore) return;
         setLoading(true);
         try {
           const newData = await dispatch(fetchFeedReel(offset, 8));
@@ -82,27 +89,63 @@ interface RouteProp {
         
         }
       }, 200),
-      [loading, hasMore, data, dispatch],
+      [routeParams?.category, loading, hasMore, data, dispatch],
     );
   
     useEffect(() => {
-      if (routeParams?.data) {
-        setData(routeParams?.data);
-        setOffset(routeParams?.data?.length);
+      let cancelled = false
+
+      const loadCategory = async () => {
+        if (!routeParams?.category) {
+          if (routeParams?.data) {
+            setData(routeParams.data)
+            setOffset(routeParams.data.length)
+          }
+          return
+        }
+
+        setLoading(true)
+        setHasMore(false)
+        const reels = await dispatch(
+          fetchFeedReel(0, 50, routeParams.category, routeParams.subcategory),
+        )
+        if (!cancelled) {
+          setData(reels || [])
+          setOffset(reels?.length || 0)
+          setLoading(false)
+        }
       }
-    }, [routeParams?.data]);
+
+      loadCategory()
+      return () => {
+        cancelled = true
+      }
+    }, [routeParams?.category, routeParams?.subcategory, routeParams?.data, dispatch]);
   
+    dataRef.current = data;
+
+    const scrollToNext = useCallback(() => {
+      const next = indexRef.current + 1;
+      if (next >= dataRef.current.length) {
+        return;
+      }
+      listRef.current?.scrollToIndex({index: next, animated: true});
+    }, []);
+
     const renderVideoList = useCallback(
       ({item, index}: {item: any; index: number}) => {
         // console.log('gettt',index, currentVisibleIndex,);
         return (
             <VideoItem key={index} item={item} isVisible={index===currentVisibleIndex}
             preload={Math.abs(currentVisibleIndex+3) >= index}
+            playsBeforeScroll={routeParams?.playsBeforeScroll ?? 2}
+            pauseOnTap={routeParams?.pauseOnTap !== false}
+            onFinished={index === currentVisibleIndex ? scrollToNext : undefined}
             />
        
         );
       },
-      [currentVisibleIndex],
+      [currentVisibleIndex, scrollToNext, routeParams?.playsBeforeScroll, routeParams?.pauseOnTap],
     );
   
     const keyExtractor = useCallback((item: any) => item._id.toString(), []);
@@ -116,7 +159,14 @@ interface RouteProp {
       <CustomView>
         <Image source={loader} style={styles.thumbnail} />
         <FlatList
+          ref={listRef}
           data={data || []}
+          onScrollToIndexFailed={info => {
+            listRef.current?.scrollToOffset({
+              offset: screenHeight * info.index,
+              animated: true,
+            });
+          }}
           keyExtractor={keyExtractor}
           renderItem={memoizedValue}
           windowSize={2}

@@ -2,12 +2,7 @@ import UIKit
 import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
-import FBSDKCoreKit
 import AVFoundation
-import FBSDKLoginKit
-import FBSDKShareKit
-import SafariServices
-import AuthenticationServices
 
 
 @main
@@ -26,12 +21,6 @@ class AppDelegate: RCTAppDelegate {
       print("Failed to set audio session category:", error)
     }
 
-    // Initialize Facebook SDK
-    ApplicationDelegate.shared.application(
-      application,
-      didFinishLaunchingWithOptions: launchOptions
-    )
-
     self.initialProps = [:]
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
@@ -39,15 +28,7 @@ class AppDelegate: RCTAppDelegate {
   override func application(_ app: UIApplication,
                             open url: URL,
                             options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-    // Handle Facebook and other URL schemes
-    let handled = ApplicationDelegate.shared.application(
-      app,
-      open: url,
-      sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
-      annotation: options[UIApplication.OpenURLOptionsKey.annotation]
-    )
-
-    return handled || super.application(app, open: url, options: options)
+    return super.application(app, open: url, options: options)
   }
 
   override func sourceURL(for bridge: RCTBridge) -> URL? {

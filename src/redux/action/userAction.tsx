@@ -36,7 +36,7 @@ export const checkUsernameAvailability =
       token_storage.set('access_token', res.data.tokens.access_token);
       token_storage.set('refresh_token', res.data.tokens.refresh_token);
       await dispatch(setUser(res.data.user));
-      resetAndNavigate('BottomTab');
+      resetAndNavigate('KidSetupScreen');
     } catch (error: any) {
       Toast.show({
         type: 'normalToast',
